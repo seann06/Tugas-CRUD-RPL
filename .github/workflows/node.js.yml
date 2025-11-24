@@ -30,13 +30,16 @@ jobs:
         with:
           node-version: 20
 
-      - run: npm install
+      - name: Install Dependencies
+        run: npm install
 
-      - run: cp .env.testing .env
+      - name: Salin File Env untuk Testing
+        run: cp .env.testing .env
 
-      - run: npm run lint
+      - name: Jalankan Linter
+        run: npm run lint
 
-      - name: Wait for MySQL
+      - name: Menunggu MySQL Siap
         run: |
           echo "Waiting for MySQL…"
           for i in {1..30}; do
@@ -47,6 +50,8 @@ jobs:
             sleep 2
           done
 
-      - run: node ace migration:run --force
+      - name: Jalankan Migrasi Database
+        run: node ace migration:run
 
-      - run: node ace test --force-exit "hapus kalau tidak ada test unit"
+      - name: Jalankan Test
+        run: node ace test
